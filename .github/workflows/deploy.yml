@@ -1,0 +1,36 @@
+name: Deploy Website
+on:
+  push:
+    branches:
+      - main # Startet, sobald du Code auf den 'main'-Zweig hochlädst
+
+permissions:
+  id-token: write # Der Einlass-Aufkleber für den Wächter!
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Build Astro
+        run: |
+          npm ci
+          npm run build # Erstellt deinen fertigen dist/ Ordner
+
+      - name: AWS Anmeldung via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::637423626013:role/astro-role # Deine Rolle!
+          aws-region: eu-central-1 # Deine AWS-Region
+
+      - name: Upload zu S3
+        run: aws s3 sync dist/ s3://bucket-astro1 --delete
+
