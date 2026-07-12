@@ -18,12 +18,15 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
-      - name: Install & Build Astro
-        run: |
-          npm ci
-          npm run build # Erstellt deinen fertigen dist/ Ordner
+      - name: Install dependencies
+        run: npm ci --engine-strict=false
+
+
+      - name: Build Astro
+        run: npm run build # Erstellt deinen fertigen dist/ Ordner
 
       - name: AWS Anmeldung via OIDC
         uses: aws-actions/configure-aws-credentials@v4
@@ -33,4 +36,3 @@ jobs:
 
       - name: Upload zu S3
         run: aws s3 sync dist/ s3://bucket-astro1 --delete
-
