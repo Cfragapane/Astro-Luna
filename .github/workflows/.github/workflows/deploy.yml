@@ -35,7 +35,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: eu-central-1
-          audience: ://amazonaws.com
+          audience: sts.amazonaws.com  # Präfix erfolgreich repariert!
 
       - name: Deploy Compiled Site to Amazon S3
         run: |
