@@ -1,5 +1,23 @@
- - name: AWS Anmeldung via OIDC
-   uses: aws-actions/configure-aws-credentials@v4
-   with:
-   role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActions-Astro-Luna-Role
-  aws-region: eu-central-1
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: AWS Anmeldung via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActions-Astro-Luna-Role
+          aws-region: eu-central-1
