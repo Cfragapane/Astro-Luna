@@ -27,12 +27,11 @@ jobs:
       - name: Build Astro
         run: npm run build # Erstellt deinen fertigen dist/ Ordner
 
-      - name: AWS Anmeldung via Credentials
+      - name: AWS Anmeldung via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/astro-role
+          aws-region: eu-central-1
 
       - name: Upload zu S3
         run: aws s3 sync dist/ s3://bucket-astro1 --delete
