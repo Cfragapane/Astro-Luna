@@ -19,5 +19,5 @@ jobs:
       - name: AWS Anmeldung via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::123456789012:role/GitHubActions-Astro-Luna-Role
+          role-to-assume: arn:aws:iam::992382438008:role/GitHubActions-Astro-Luna-Role
           aws-region: eu-central-1
