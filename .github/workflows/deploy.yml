@@ -1,5 +1,6 @@
-      - name: AWS Anmeldung via OIDC
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/astro-role
-          aws-region: eu-central-1
+- name: AWS Anmeldung via OIDC
+  uses: aws-actions/configure-aws-credentials@v4
+  with:
+  role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActions-Astro-Luna-Role 
+aws-region: eu-central-1
+  
