@@ -16,8 +16,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: AWS Anmeldung via OIDC
+      - name: AWS Anmeldung via Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::992382438008:role/GitHubActions-Astro-Luna-Role
-          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
