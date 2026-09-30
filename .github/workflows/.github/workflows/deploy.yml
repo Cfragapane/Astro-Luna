@@ -1,4 +1,4 @@
-name: AWS S3 Production Deployment via OIDC
+name: Deploy to AWS
 
 on:
   push:
@@ -11,32 +11,29 @@ permissions:
 
 jobs:
   deploy:
-    name: Build and Deploy to S3
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Runtime
+      - name: Node.js einrichten
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Abhängigkeiten installieren
         run: npm ci
 
-      - name: Build Astro Website
+      - name: Astro Projekt bauen
         run: npm run build
 
-      - name: Configure AWS Credentials via OIDC
+      - name: AWS Anmeldung via Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
-          aws-region: eu-central-1
-          audience: sts.amazonaws.com  # Präfix erfolgreich repariert!
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Deploy Compiled Site to Amazon S3
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
+      - name: Dateien zu S3 hochladen
+        run: aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
